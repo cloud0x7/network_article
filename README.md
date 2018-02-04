@@ -34,3 +34,14 @@
     - 第二，对内容进行一个定义
     - 第三，从不同维度去考虑宏观的架构层、组件层、模块层
     - 第四，也要考虑到互相间交流的接口和相关传递的数据
+* [彻底终结MySQL同步延迟问题](https://www.jianshu.com/p/ed19bb0e748a)
+  - 网络：主从之间带宽及延迟
+  - 机器性能：
+    - 从机配置低：主机用SSD，从机用SATA
+    - 从机高负载：在从机上做统计
+    - 从机硬件问题：iostat
+  - 大事务：查看processlist
+  - 锁：查看processlist
+  - 参数：innodb_flush_log_at_trx_commit， sync_binlog等
+  - 多线程：`show variables like '%slave_parallel%'`
+  - 组提交：
