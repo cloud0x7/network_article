@@ -97,5 +97,11 @@
   - timer每秒移动一格，Cycle-Num为0则处理任务，否则减1
   - 优点：1）无需轮询；2）一个任务只执行一次；3）时效性好，精确到秒  
   
+#### MQ如何快速实现流量削峰填谷
+* 常见方案：1）上游队列缓冲，限速发送；2）下游队列缓冲，限速执行
+* MQ缓冲方式：
+  - 由MQ-Server推模式，改为MQ-Client拉模式
+  - 如果MQ-Server堆积消息过多，Client要改进为批量写，提高吞吐量  
+  
 ### 资料链接
 * [架构师之路精选](https://mp.weixin.qq.com/s/CIPosICgva9haqstMDIHag)
