@@ -202,5 +202,23 @@
   - 如果事件发出方关注下游执行执行结果，用RPC；不关心订阅方的执行结果，应该用MQ
 * 配置中心，互联网架构解耦利器  
   
+#### session一致性架构设计实践
+* session一致性问题：多台web-server来保证高可用时，每次http短连接请求就不一定能路由到正确的session了
+* session同步法：多个web-server之间相互同步session
+  - 优点：web-server支持的功能，应用程序不需要修改代码
+  - 缺点：1）session的同步需要数据传输，占内网带宽，有时延；2）所有web-server都包含所有session数据，数据量受内存限制，无法水平扩展；3）有更多web-server时要歇菜
+* 客户端存储法：将session存储到浏览器cookie中，此方案不常用
+  - 优点：服务端不需要存储
+  - 缺点：1）占外网带宽；2）存在泄漏、篡改、窃取等安全隐患；3）session存储的数据大小受cookie限制
+* 反向代理hash一致性
+  - 方案一：四层代理hash - 使用用户ip来做hash，以保证同一个ip的请求落在同一个web-server上
+  - 方案二：七层代理hash - 使用业务属性，以保证同一个用户的请求落在同一个web-server上
+    - 优点：1）只改nginx配置，不改代码；2）负载均衡；3）支持水平扩展
+    - 缺点：1）如果web-server重启，一部分session会丢失；2）如果web-server水平扩展，rehash后session重新分布，也会有一部分用户路由不到正确的session
+* 后端统一存储：将session存储在web-server后端的存储层，数据库或者缓存（推荐）
+  - 优点：1）没有安全隐患；2）可以水平扩展；3）web-server重启或者扩容都不会有session丢失
+  - 缺点：增加了一次网络调用，并且需要修改应用代码
+  
+  
 ### 资料链接
 * [架构师之路精选](https://mp.weixin.qq.com/s/CIPosICgva9haqstMDIHag)
