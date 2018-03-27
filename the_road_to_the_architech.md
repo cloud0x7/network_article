@@ -284,5 +284,24 @@
       - 1）ext里的key用数字表示，抽象出一个类目属性表；value也一样
       - 2）统一检索：所有非“帖子id”的个性化检索需求，统一走外置索引  
   
+#### 业界难题-“跨库分页”的四种方案
+* 数据量不大时，利用SQL提供的offset/limit功能就能满足分页查询需求
+* 数据量变大，水平切分后如何实现分页
+  - 方案一：全局视野法 - 每个库都取出N页数据，在内存进行排序，再取出N页数据
+    - 优点：业务无损，精准返回数据
+    - 缺点：1）返回更多数据，消耗更多网络流量；2）增加CPU计算量；3）页码增加，性能急剧下降
+  - 方案二：业务折衷法
+    - 折衷1：禁止跳页查询，只提供下一页 - 数据的传输量和排序的数据量不会随着不断翻页而导致性能下降
+    - 折衷2：允许数据精度损失 - 在各分库查询一部分数据，然后合并
+  - 方案三：终极武器-二次查询法
+    - 1）将order by time offset X limit Y，改写成order by time offset X/N limit Y
+    - 2）找到最小值time_min
+    - 3）between二次查询，order by time between $time_min and $time_i_max
+    - 4）设置虚拟time_min，找到time_min在各个分库的offset，从而得到time_min在全局的offset
+    - 5）得到了time_min在全局的offset，自然得到了全局的offset X limit Y
+
+  
+  
+  
 ### 资料链接
 * [架构师之路精选](https://mp.weixin.qq.com/s/CIPosICgva9haqstMDIHag)
