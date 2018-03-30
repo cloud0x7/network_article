@@ -1,0 +1,16 @@
+架构师之路精选2016
+====================  
+
+#### 互联网架构，如何进行容量设计
+* 常见的容量评估包括数据量、并发量、带宽、CPU/MEM/DISK等
+* 容量评估的步骤与方法
+  - 步骤一：评估总访问量（询问业务方）
+    - 要做一个APP-push的运营活动，计划在30分钟内完成5000w用户的push推送，预计push消息点击率10%，求push落地页系统的总访问量？5000w*10% = 500w
+  - 步骤二：评估平均访问量QPS（有了总量，除以总时间即可）
+  - 步骤三：评估高峰QPS（根据业务特性，通过业务访问曲线评估）
+  - 步骤四：评估系统、单机极限QPS（压力测试）
+
+
+### 资料链接
+* [2016精选](https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&mid=2651959886&idx=1&sn=03e45a5014053607eff5e55ed2c660d7&chksm=bd2d07928a5a8e8454d395e176fa9d346682abfe9dfbf3244f1dead83ee4508aa25121f9b811&scene=21#wechat_redirect)
+* [容量规划+单点优化+配置优化](https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&mid=2651960436&idx=1&sn=c336b6160263bf5afa2e0aa47088861e&chksm=bd2d01a88a5a88be02af6ecf2b280b3c396b10061d39840ec6df14064fe212b3fc97951d3214&scene=25#wechat_redirect)  
